@@ -1,0 +1,31 @@
+﻿@page "/"
+@using Blazor.Demos.SharedComponents
+@using Blazor.Demos.Shared.Models
+@using System.Net.Http
+@inject HttpClient Http
+@inject Blazor.Demos.Shared.Services.UserInfoService _userInfoService
+@inject IJSRuntime JsRuntime;
+
+<h1>Hello, world!</h1>
+
+This is Blazor Wasm.
+@if(_userInfo != null)
+{
+    <strong>Welcome, @_userInfoService.GetFullName(_userInfo)</strong>
+}
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<h2>User info form</h2>
+<UserInfoFormComponent OnUserInfoSubmitted="UserInfoSubmitted"></UserInfoFormComponent>
+
+@code {
+    private UserInfo _userInfo = null;
+
+    private async Task UserInfoSubmitted(UserInfo userInfo)
+    {
+        await Http.PostJsonAsync("https://localhost:44369/api/userInfo/IsValid", userInfo);
+        _userInfo = userInfo;
+        await JsRuntime.InvokeAsync<string>("exampleAlertFunction", new object[] { "Welcome, " + userInfo.FirstName + "!" });
+    }
+}

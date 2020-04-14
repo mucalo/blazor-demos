@@ -1,0 +1,30 @@
+﻿@inherits UserInfoFormComponentBase
+
+<EditForm Model="@UserInfo" OnValidSubmit="SubmitUserInfo">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label>
+            Name:
+        </label>
+        <InputText @bind-Value="UserInfo.FirstName" />
+    </p>
+    <p>
+        <label>
+            LastName:
+        </label>
+
+        <InputText @bind-Value="UserInfo.LastName" />
+    </p>
+    <p>
+        <label>
+            Email:
+        </label>
+        <InputText @bind-Value="UserInfo.Email" />
+    </p>
+    <p>
+        Name to display: @UserInfoService.GetFullNameWithEmail(UserInfo, false)
+    </p>
+    <button type="submit">Submit</button>
+</EditForm>
